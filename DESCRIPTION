@@ -1,0 +1,11 @@
+Package: harmonygeneticsubtype
+Type: Package
+Title: Extracts Principal Genetic Subtypes from the Harmony Platform
+Version: 0.1.0
+Author: Sulaiman Lawal <sulaiman.lawal@newcastle.ac.uk>
+Maintainer: Sulaiman Lawal <sulaiman.lawal@newcastle.ac.uk>
+Description: Provides a list of functions to extract karyotypes, age, gender 
+        and principal genetic subtypes from the harmony platform.
+License: MIT
+Encoding: UTF-8
+LazyData: true
