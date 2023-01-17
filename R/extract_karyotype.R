@@ -1,13 +1,11 @@
-## extract_karyotype function extracts all the karyotype at diagnosis into a dataframe
+## extract_karyotype function extracts all the karyotype at diagnosis into a data frame
 
-#' Title
+#' Function to extract karyotype from the OMOP measurement table
 #'
-#' @param measurement
+#' @param measurement The measurement data frame from the OMOP table
 #'
-#' @return
+#' @return The extracted karyotype in a data frame format
 #' @export
-#'
-#' @examples
 #'
 extract_karyotype <- function(measurement) {
   ## check variable is of class data.frame

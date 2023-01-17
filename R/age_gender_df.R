@@ -1,15 +1,13 @@
-## age_gender_df function extracts a dataframe conatining age, gender, year_of_birth and age categories
+## age_gender_df function extracts a data frame containing age, gender, year_of_birth and age categories
 
-#' Title
+#' Function to extract age and gender from the OMOP measurement table
 #'
-#' @param person
-#' @param concept
-#' @param measurement
+#' @param person The person data frame from the OMOP table
+#' @param concept The concept data frame from the OMOP table
+#' @param measurement The measurement data frame from the OMOP table
 #'
-#' @return
+#' @return A data frame containing age, gender, year of birth and age categories
 #' @export
-#'
-#' @examples
 #'
 age_gender_df <- function(person, concept, measurement){
   require(lubridate)

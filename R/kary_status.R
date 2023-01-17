@@ -1,14 +1,12 @@
 ## extract kary_status as normal, failed, abnormal, and not_done
 
-#' Title
+#' Function to extract karyotype status from the OMOP measurement table
 #'
-#' @param person
-#' @param measurement
+#' @param person The person data frame from the OMOP table
+#' @param measurement The measurement data frame from the OMOP table
 #'
-#' @return
+#' @return A data frame containing the karyotype status
 #' @export
-#'
-#' @examples
 #'
 kary_status <- function(person, measurement) {
   ## check inputs are of class data.frame

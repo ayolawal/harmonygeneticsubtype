@@ -1,14 +1,12 @@
 ## extract ETV6::RUNX1 principal genetic abnormality => t(12;21)(p13;q22.3)(ETV6,RUNX1)
 
-#' Title
+#' Function to extract the ETV6::RUNX1 principal genetic abnormality
 #'
-#' @param person
-#' @param measurement
+#' @param person The person data frame from the OMOP table
+#' @param measurement The measurement data frame from the OMOP table
 #'
-#' @return
+#' @return A data frame containing the ETV6::RUNX1 principal genetic abnormality
 #' @export
-#'
-#' @examples
 #'
 etv6_runx1 <- function(person, measurement) {
 
