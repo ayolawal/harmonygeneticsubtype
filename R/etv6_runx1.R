@@ -8,6 +8,7 @@
 #' @return A data frame containing the ETV6::RUNX1 principal genetic abnormality
 #' @export
 #'
+
 etv6_runx1 <- function(person, measurement) {
 
   ## check inputs are of class data.frame

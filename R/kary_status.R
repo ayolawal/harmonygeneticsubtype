@@ -8,6 +8,8 @@
 #' @return A data frame containing the karyotype status
 #' @export
 #'
+#'
+
 kary_status <- function(person, measurement) {
   ## check inputs are of class data.frame
   if(!is(person, "data.frame") | !is(measurement, "data.frame")){

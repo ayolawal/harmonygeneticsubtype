@@ -7,6 +7,7 @@
 #' @return The extracted karyotype in a data frame format
 #' @export
 #'
+
 extract_karyotype <- function(measurement) {
   ## check variable is of class data.frame
   if(!is(measurement, "data.frame")){
