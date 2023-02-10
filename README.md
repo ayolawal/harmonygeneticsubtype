@@ -88,4 +88,4 @@ extract_B_other_B_other_plus_and_T_other(person = person, measurement = measurem
 gen_gsubtype_and_riskgroup(person = person, measurement = measurement, condition_occurrence = condition_occurrence)
 ~~~
 
-**The list of the concept ids used to extract all the genetic abnormalities are availabe [here](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/Concept_id_List.xlsx).
+**The list of the concept ids used to extract all the genetic abnormalities are availabe [here](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/Concept_id_List.xlsx).**
