@@ -29,7 +29,7 @@ extract_heh_hap_hotr <- function(person, measurement) {
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     arrange( person_id, desc(value_as_concept_id)) %>%
     filter(!duplicated(person_id)) %>%
-    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Not_done", value_as_concept_id)) %>%
+    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
     mutate( heh = value_as_concept_id) %>%
     select(-value_as_concept_id)
 
@@ -42,7 +42,7 @@ extract_heh_hap_hotr <- function(person, measurement) {
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     arrange( person_id, desc(value_as_concept_id)) %>%
     filter(!duplicated(person_id)) %>%
-    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Not_done", value_as_concept_id)) %>%
+    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
     mutate( hotr = value_as_concept_id) %>%
     select(-value_as_concept_id)
 
@@ -55,7 +55,7 @@ extract_heh_hap_hotr <- function(person, measurement) {
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     arrange( person_id, desc(value_as_concept_id)) %>%
     filter(!duplicated(person_id)) %>%
-    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Not_done", value_as_concept_id)) %>%
+    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
     mutate(hap = value_as_concept_id) %>%
     select(-value_as_concept_id)
 
@@ -84,7 +84,7 @@ extract_heh_hap_hotr <- function(person, measurement) {
   df9 <- heh_cid %>%
     mutate(heh = ifelse(person_id %in% c(heh_kar1$person_id, heh_kar2$person_id), "Present", heh)) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(heh = ifelse(heh == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", heh)) %>%
+    mutate(heh = ifelse(heh == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", heh)) %>%
     select(-kary_status)
 
   hap_kar <- kar_refined %>% mutate(karyotype = gsub("\\s|\\?", "", karyotype)) %>%
@@ -98,7 +98,7 @@ extract_heh_hap_hotr <- function(person, measurement) {
   df10 <- hap_cid %>%
     mutate(hap = ifelse(person_id %in% hap_kar$person_id, "Present", hap)) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(hap = ifelse(hap == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", hap)) %>%
+    mutate(hap = ifelse(hap == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", hap)) %>%
     select(-kary_status)
 
   p1 <- "\\+1"
@@ -136,7 +136,7 @@ extract_heh_hap_hotr <- function(person, measurement) {
   df11 <- hotr_cid %>%
     mutate(hotr = ifelse(person_id %in% c(hotr_kar1$person_id, hotr_kar2$person_id, hotr_kar3$person_id), "Present", hotr)) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(hotr = ifelse(hotr == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", hotr)) %>%
+    mutate(hotr = ifelse(hotr == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", hotr)) %>%
     select(-kary_status) %>%
     list(df9, df10) %>%
     reduce(inner_join, by = "person_id") %>%

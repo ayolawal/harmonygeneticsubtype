@@ -32,10 +32,10 @@ extract_kmt2a_mllt1 <- function(person, measurement) {
     select(person_id, value_as_concept_id) %>%
     mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135, FALSE, TRUE)) %>%
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
-    mutate(KMT2A_MLLT1 = ifelse(is.na(value_as_concept_id), "Not_done", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
+    mutate(KMT2A_MLLT1 = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
     mutate(KMT2A_MLLT1 = ifelse(person_id  %in% kmt2a_mllt1_kar$person_id, "Present", KMT2A_MLLT1)) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(KMT2A_MLLT1 = ifelse(KMT2A_MLLT1 == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", KMT2A_MLLT1)) %>%
+    mutate(KMT2A_MLLT1 = ifelse(KMT2A_MLLT1 == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", KMT2A_MLLT1)) %>%
     select(-c(kary_status, value_as_concept_id))
 
   return(df4)

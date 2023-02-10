@@ -32,10 +32,10 @@ extract_bcr_abl1 <- function(person, measurement) {
     arrange(person_id, desc(value_as_concept_id)) %>%             ## SELECT ANY POSITIVE INSTANCE OF THE ABNORMALITY
     filter(!duplicated(person_id)) %>%
     mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135, FALSE, TRUE)) %>%
-    mutate(BCR_ABL1 = ifelse(is.na(value_as_concept_id), "Not_done", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
+    mutate(BCR_ABL1 = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
     mutate(BCR_ABL1 = ifelse(person_id  %in% bcr_abl1_kar$person_id, "Present", BCR_ABL1)) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(BCR_ABL1 = ifelse(BCR_ABL1 == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", BCR_ABL1)) %>%
+    mutate(BCR_ABL1 = ifelse(BCR_ABL1 == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", BCR_ABL1)) %>%
     select(-c(kary_status, value_as_concept_id))
 
   return(df2)

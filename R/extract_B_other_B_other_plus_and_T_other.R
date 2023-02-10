@@ -53,18 +53,18 @@ extract_B_other_B_other_plus_and_T_other <- function(person, measurement, condit
     merge(df_gsubtype, by = "person_id", all.y = T) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
     mutate(B_other = ifelse((is.na(gsubtype) & (Immuno == "B_cell") & (kary_status=="Normal" | kary_status=="Abnormal")), "Present",
-                            ifelse(!is.na(gsubtype) & (Immuno == "B_cell"), "Absent", "Not_done"))) %>%
+                            ifelse(!is.na(gsubtype) & (Immuno == "B_cell" | Immuno == "T_cell" ), "Absent", "Unknown"))) %>%
     mutate(gsubtype = ifelse(is.na(gsubtype) & B_other == "Present", "B_other", gsubtype)) %>%
-    mutate(B_other_plus = ifelse((Immuno == "B_cell" & B_other == "Not_done" & is.na(gsubtype)), "Present", "Absent")) %>%
+    mutate(B_other_plus = ifelse((Immuno == "B_cell" & B_other == "Unknown" & is.na(gsubtype)), "Present",
+                                 ifelse(!is.na(gsubtype) & (Immuno == "B_cell" | Immuno == "T_cell" ), "Absent", "Unknown"))) %>%
     mutate(gsubtype = ifelse(is.na(gsubtype) & B_other_plus == "Present", "B_other_plus", gsubtype)) %>%
     mutate(gsubtype = ifelse(gsubtype == "complex_karyotype", "complex", gsubtype)) %>%
     mutate(T_other = ifelse((is.na(gsubtype) & (Immuno == "T_cell") & (kary_status=="Normal" | kary_status=="Abnormal")), "Present",
-                            ifelse(!is.na(gsubtype) & (Immuno == "T_cell"), "Absent", NA))) %>%
-    mutate(T_other = ifelse(is.na(T_other) & Immuno == "T_cell", "Not_done", T_other)) %>%
+                            ifelse(!is.na(gsubtype) & (Immuno == "T_cell" | Immuno == "B_cell"), "Absent", "Unknown"))) %>%
     mutate(gsubtype = ifelse(is.na(gsubtype) & T_other == "Present", "T_other", gsubtype)) %>%
-    mutate("No_data" = ifelse(is.na(gsubtype), "Present", "Absent")) %>%
-    mutate(gsubtype = ifelse(is.na(gsubtype), "No_data", gsubtype)) %>%
-    select(person_id, ETV6_RUNX1, BCR_ABL1, KMT2A_AFF1, KMT2A_MLLT1, KMT2A_r, TCF3_PBX1, TCF3_HLF, iAMP21, heh, hap, hotr, complex_karyotype, B_other, B_other_plus, T_other, No_data, Immuno, gsubtype)
+    mutate("Unknown" = ifelse(is.na(gsubtype), "Present", "Absent")) %>%
+    mutate(gsubtype = ifelse(is.na(gsubtype), "Unknown", gsubtype)) %>%
+    select(person_id, ETV6_RUNX1, BCR_ABL1, KMT2A_AFF1, KMT2A_MLLT1, KMT2A_r, TCF3_PBX1, TCF3_HLF, iAMP21, heh, hap, hotr, complex_karyotype, B_other, B_other_plus, T_other, Unknown, Immuno, gsubtype)
 
   return(df13_16)
 }

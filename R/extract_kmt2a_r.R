@@ -36,10 +36,10 @@ extract_kmt2a_r <- function(person, measurement) {
     arrange(person_id, MD, desc(value_as_concept_id)) %>%             ## USED MEASUREMENT DATE TO SELECT THE EARLIEST MEASUREMENTS FOR INDIVIDUALS WITH MULTIPLE ENTRIES
     filter(!duplicated(person_id)) %>%
     mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135, FALSE, TRUE)) %>%
-    mutate(KMT2A_r = ifelse(is.na(value_as_concept_id), "Not_done", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
+    mutate(KMT2A_r = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
     mutate(KMT2A_r = ifelse(person_id  %in% kmt2a_r_kar$person_id, "Present", KMT2A_r)) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(KMT2A_r = ifelse(KMT2A_r == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", KMT2A_r)) %>%
+    mutate(KMT2A_r = ifelse(KMT2A_r == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", KMT2A_r)) %>%
     select(-c(kary_status, value_as_concept_id, measurement_date, MD))
 
   return(df5)

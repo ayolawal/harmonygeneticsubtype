@@ -24,9 +24,9 @@ extract_tcf3_hlf <- function(person, measurement) {
     filter(!duplicated(person_id)) %>%
     select( person_id, value_as_concept_id) %>%
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
-    mutate(TCF3_HLF = ifelse(is.na(value_as_concept_id), "Not_done", ifelse(value_as_concept_id == 4181412, "Present", "Absent"))) %>%
+    mutate(TCF3_HLF = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == 4181412, "Present", "Absent"))) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(TCF3_HLF = ifelse(TCF3_HLF == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", TCF3_HLF)) %>%
+    mutate(TCF3_HLF = ifelse(TCF3_HLF == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", TCF3_HLF)) %>%
     select(-c(kary_status, value_as_concept_id))
 
   return(df7)

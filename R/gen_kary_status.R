@@ -56,7 +56,7 @@ gen_kary_status <- function(person, measurement) {
   ## Karyotype not done
   kary_none <- person %>% filter(person_id %ni% c(kary_normal$person_id, kary_fail$person_id, kary_abnormal$person_id)) %>%
     select(person_id) %>%
-    mutate(kary_status = "Not_done")
+    mutate(kary_status = "Unknown")
 
   kary_status <- rbind(kary_normal, kary_fail, kary_abnormal, kary_none) %>% arrange(person_id)
 

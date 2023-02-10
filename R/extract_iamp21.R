@@ -23,9 +23,9 @@ extract_iamp21 <- function(person, measurement) {
     filter(!duplicated(person_id)) %>%
     select( person_id, value_as_concept_id) %>%
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
-    mutate("iAMP21" = ifelse(is.na(value_as_concept_id), "Not_done", ifelse(value_as_concept_id == 4181412, "Present", "Absent"))) %>%
+    mutate("iAMP21" = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == 4181412, "Present", "Absent"))) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
-    mutate(iAMP21 = ifelse(iAMP21 == "Not_done" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", iAMP21)) %>%
+    mutate(iAMP21 = ifelse(iAMP21 == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", iAMP21)) %>%
     select(-c(kary_status, value_as_concept_id))
 
   return(df8)

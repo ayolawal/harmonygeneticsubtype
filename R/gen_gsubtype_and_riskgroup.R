@@ -16,7 +16,7 @@ gen_gsubtype_and_riskgroup <- function(person, measurement, condition_occurrence
     stop("All inputs must be of class 'data.frame'")
   }
 
-  riskgroup_gsubtype <- principal_abn_T_other_no_data(person, measurement, condition_occurrence) %>%
+  riskgroup_gsubtype <- extract_B_other_B_other_plus_and_T_other(person, measurement, condition_occurrence) %>%
     select(person_id, gsubtype) %>%
     mutate(risk_group = ifelse((gsubtype=="ETV6_RUNX1" | gsubtype=="heh"), "good_risk",
                                ifelse(gsubtype=="TCF3_PBX1", "intermediate_risk",

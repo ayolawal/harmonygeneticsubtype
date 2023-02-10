@@ -21,7 +21,7 @@ extract_etv6_runx1 <- function(person, measurement) {
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     arrange(person_id, desc(value_as_concept_id)) %>%             ## SELECT ANY POSITIVE INSTANCE OF THE ABNORMALITY
     filter(!duplicated(person_id)) %>%
-    mutate(ETV6_RUNX1 = ifelse(is.na(value_as_concept_id), "Not_done", ifelse(value_as_concept_id == 4181412, "Present", "Absent"))) %>%
+    mutate(ETV6_RUNX1 = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == 4181412, "Present", "Absent"))) %>%
     select(-c(value_as_concept_id))
 
   return(df1)
