@@ -1,6 +1,6 @@
 # Harmony Genetic Subtype Package
 
-Healthcare Alliance for Resourceful Medicines Offensive against Neoplasms in HematologY (HARMONY) is a European network of excellence that captures, integrates, analyzes, and harmonizes big data from high-quality multidisciplinary sources with the main purpose of unlocking valuable knowledge on various important hematologic malignancies (HMs). [Pre-process R Script](../blob/main/data-raw/preprocess_datasets.R)
+Healthcare Alliance for Resourceful Medicines Offensive against Neoplasms in HematologY (HARMONY) is a European network of excellence that captures, integrates, analyzes, and harmonizes big data from high-quality multidisciplinary sources with the main purpose of unlocking valuable knowledge on various important hematologic malignancies (HMs). [Pre-process R Script](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/preprocess_datasets.R)
 
 HARMONY aims at assembling, connecting and analyzing big data from HM patients to define standard sets of outcome indicators to be measured and used for decision-making by key healthcare systems stakeholders.
 
