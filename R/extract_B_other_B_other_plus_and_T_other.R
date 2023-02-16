@@ -25,7 +25,7 @@ extract_B_other_B_other_plus_and_T_other <- function(person, measurement, condit
   df6 <- extract_tcf3_pbx1(person, measurement)
   df7 <- extract_tcf3_hlf(person, measurement)
   df8 <- extract_iamp21(person, measurement)
-  df9_11 <- extract_heh_hap_hotr(person, measurement)
+  df9_11 <- extract_heh_hap_LH(person, measurement)
   df12 <- extract_complex_karyotype(person, measurement)
 
   ## Construct dataset with the principal genetic abnormalities
@@ -64,7 +64,7 @@ extract_B_other_B_other_plus_and_T_other <- function(person, measurement, condit
     mutate(gsubtype = ifelse(is.na(gsubtype) & T_other == "Present", "T_other", gsubtype)) %>%
     mutate("Unknown" = ifelse(is.na(gsubtype), "Present", "Absent")) %>%
     mutate(gsubtype = ifelse(is.na(gsubtype), "Unknown", gsubtype)) %>%
-    select(person_id, ETV6_RUNX1, BCR_ABL1, KMT2A_AFF1, KMT2A_MLLT1, KMT2A_r, TCF3_PBX1, TCF3_HLF, iAMP21, heh, hap, hotr, complex_karyotype, B_other, B_other_plus, T_other, Unknown, Immuno, gsubtype)
+    select(person_id, ETV6_RUNX1, BCR_ABL1, KMT2A_AFF1, KMT2A_MLLT1, KMT2A_r, TCF3_PBX1, TCF3_HLF, iAMP21, heh, hap, LH, complex_karyotype, B_other, B_other_plus, T_other, Unknown, Immuno, gsubtype)
 
   return(df13_16)
 }
