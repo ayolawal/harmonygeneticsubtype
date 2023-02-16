@@ -6,7 +6,7 @@ HARMONY aims at assembling, connecting and analyzing big data from HM patients t
 
 HarmonyGeneticSubtype is an R package developed by the Leukaemia Research Cytogenetics Group (LRCG), Faculty of Medical Sciences at Newcastle University, specifically to extract some pre-defined chromosomal abnormalities from data collected from thousands of HM patients for downstream analyses. The package contains different tools that could be used to distil for instance individuals with certain genetic conditions like down syndrome, Intrachromosomal amplification of chromosome 21 (iAMP21), chromosomal translocations - ETV6::RUNX1, BCR::ABL1 etc from tens of thousands of high-quality anonymised harmonised hematologic malignancies datasets.
 
-The package leverage the representation of the datasets in Observational Medical Outcomes Partnership (OMOP) common data models (CDM) standardised tables format in the European knowledge bank ... database. More information on the OMOP common data models can be found on the [Observational Health Data Sciences and Informatics website](https://www.ohdsi.org/data-standardization/).
+The package leverages the representation of the datasets in Observational Medical Outcomes Partnership (OMOP) common data models (CDM) standardised tables format in the European knowledge bank ... database. More information on the OMOP common data models can be found on the [Observational Health Data Sciences and Informatics website](https://www.ohdsi.org/data-standardization/).
 
 The package is continually being updated and the tools that are available for use on the HARMONY platform are listed below. The input arguments to the tools are the pre-processed person, concept, measurement, and condition_occurrence  data frames obtained after executing the `preprocess_datasets.R` script available [here](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/preprocess_datasets.R).
 
@@ -88,4 +88,32 @@ extract_B_other_B_other_plus_and_T_other(person = person, measurement = measurem
 gen_gsubtype_and_riskgroup(person = person, measurement = measurement, condition_occurrence = condition_occurrence)
 ~~~
 
-**The list of the concept ids used to extract all the genetic abnormalities are availabe [here](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/Concept_id_List.xlsx).**
+## List of concept IDs
+
+**The concept ids used to extract all the genetic abnormalities are shown in the concept id table below.**
+<!--- [here](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/Concept_id_List.xlsx) --->
+
+<details><summary>Concept ID Table</summary>
+<p>
+
+| Abnormality | Concept_id | Column | Table | Concept_Name |
+|:---------|:---------|:--------|:---------|:----------|
+|karyotype| 40765097 | measurement_concept_id | Measurement | Chromosome analysis result in ISCN expression |
+|Age | 3007016 | measurement_concept_id | Measurement | Age at cancer diagnosis |
+| ETV6::RUNX1 | 3036903 <br> 35977015 | measurement_concept_id | Measurement | t(12;21)(p13;q22.3)(ETV6,RUNX1) fusion transcript in Blood or Tissue by Molecular genetics method <br> Karyotype t(12;21)(p13;q22) |
+| BCR::ABL1 | 3011913 <br> 3013321 <br> 3016815 <br>3028956 <br>35977026 <br> 46235651 | measurement_concept_id <br> measurement_concept_id <br> measurement_concept_id <br> measurement_concept_id <br> measurement_source_concept_id <br> measurement_source_concept_id | Measurement | t(9;22)(q34.1;q11)(ABL1,BCR) fusion transcript, major, and minor break points in Blood or Tissue by Molecular genetics method <br> Karyotype t(9;22)(q34;q11.2) | 
+| KMT2A::AFF1 | 2000109034 <br>  3012425 <br> 37030733 | measurement_source_concept_id  <br>   measurement_concept_id <br> measurement_source_concept_id  | Measurement  | Karyotype t(4;11)  <br> t(4;11)(q21.3;q23)(AFF1,MLL) fusion transcript in Blood or Tissue by Molecular genetics method |
+| KMT2A::MLLT1 | 3002279  <br> 37021664 | measurement_concept_id <br>  measurement_source_concept_id | Measurement |  t(11;19)(q23;p13.3)(MLL,MLLT1) fusion transcript in Blood or Tissue  |
+| KMT2A_r | 2000000263 <br> 2000000269 <br> 3022443 <br> 3037009  <br> 36017933 | measurement_source_concept_id <br> measurement_concept_id | Measurement | MLL partial tandem duplication analysis <br> 11q23 rearrangement by cytogenetics <br> t(9;11)(p22;q23)(MLLT3,MLL) fusion transcript  in Blood <br> MLL gene rearrangements in Blood <br> t(9:11)(p22;q23);MLLT3-MLL |
+| TCF3::PBX1 | 2000108068 <br> 3000296 | measurement_source_concept_id <br> measurement_concept_id | Measurement | Karyotype t(1;19)(q23;p13) <br> t(1;19)(q23.3;p13.3)(PBX1,TCF3) fusion transcript in Blood or Tissue |
+| TCF3::HLF	| 42868760	| measurement_concept_id | Measurement | t(17;19)(q22;p13.3)(HLF,TCF3) fusion transcript in Blood or Tissue |
+| iAMP21 | 2000000466 | measurement_source_concept_id	| Measurement | Intrachromosomal amplification of chromosome 21 measurement |
+| HeH | 2000000462 <br> 36660734 | measurement_source_concept_id <br> measurement_concept_id | Measurement | Detection of high hyperdiploidy <br> Chromosome aneuploidy details in Blood or Tissue by Molecular genetics method Narrative |
+| Hap	| 2000000464 | measurement_source_concept_id | Measurement | Detection of near haploidy measurement | 
+| LH | 2000000463 <br> 36660734 | measurement_source_concept_id <br> measurement_concept_id | Measurement | Detection of low hypodiploidy <br> Chromosome aneuploidy details in Blood or Tissue by Molecular genetics method Narrative |
+| Complex Karyotype | 2000000153 <br> 45877994 | measurement_source_concept_id <br> value_as_concept_id | Measurement | Complex karyotype <br> Yes |
+| B-Cell | 4082461 <br> 4173963 | condition_concept_id | Measurement | Precursor B-cell acute lymphoblastic leukaemia <br> B-cell acute lymphoblastic leukaemia |
+| T-Cell | 4082464 | condition_concept_id	| Measurement | T-cell acute lymphoblastic leukaemia |  
+
+</p>
+</details>
