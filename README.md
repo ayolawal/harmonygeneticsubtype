@@ -119,10 +119,6 @@ extract_complex_karyotype(person = person, measurement = measurement)
 extract_B_other_B_other_plus_and_T_other(person = person, measurement = measurement, condition_occurrence = condition_occurrence)
 ~~~
 
-* `gen_gsubtype_and_riskgroup`: **The gen_gsubtype_and_riskgroup function produces a three-column data frame consisting of 3 columns - person_id, gsubtype and riskgroups. Essentially, the gsubtype classifies every patient into a genetic subtype in a particular order of preference. Though, there are individuals with multiple genetic abnormalities, the abnormality higher in the order of preference is allocated to such patients. The riskgroup groups the patients into mainly good_risk, intermediate_risk, and poor_risk using the relevant genetic subtypes that have been associated with each risk group. The function takes the pre-processed person, measurement, and condition_occurrence data frames as input.**
-~~~
-gen_gsubtype_and_riskgroup(person = person, measurement = measurement, condition_occurrence = condition_occurrence)
-~~~
 
 ## List of concept IDs
 
