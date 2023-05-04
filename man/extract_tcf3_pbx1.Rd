@@ -10,6 +10,8 @@ extract_tcf3_pbx1(person, measurement, visit_occurrence)
 \item{person}{The person data frame from the OMOP table}
 
 \item{measurement}{The measurement data frame from the OMOP table}
+
+\item{visit_occurrence}{The visit_occurrence data frame from the OMOP table}
 }
 \value{
 A data frame containing the TCF3::PBX1 principal genetic abnormality

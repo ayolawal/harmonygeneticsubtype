@@ -17,6 +17,8 @@ extract_B_other_B_other_plus_and_T_other(
 \item{measurement}{The measurement data frame from the OMOP table}
 
 \item{condition_occurrence}{The condition_occurrence data frame from the OMOP table}
+
+\item{visit_occurrence}{The visit_occurrence data frame from the OMOP table}
 }
 \value{
 A data frame containing the B-others and B-other-plus principal genetic abnormality
