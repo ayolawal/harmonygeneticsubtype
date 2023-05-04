@@ -56,10 +56,326 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+<ul>
+<li><a href="#harmony-genetic-subtype-package">Harmony Genetic Subtype Package</a></li>
+<li>
+<a href="#tools-description">Tools Description</a>
+<ul>
+<li><a href="#extract-karyotype">Extract Karyotype</a></li>
+<li><a href="#generate-age-and-gender-data-frame">Generate Age and Gender Data Frame</a></li>
+<li><a href="#generate-karyotype-status">Generate Karyotype Status</a></li>
+<li><a href="#extract--etv6--runx1-">Extract <code>ETV6::RUNX1</code></a></li>
+<li><a href="#extract--bcr--abl1-">Extract <code>BCR::ABL1</code></a></li>
+<li><a href="#extract-kmt2a--aff1">Extract KMT2A::AFF1</a></li>
+<li><a href="#extract-kmt2a--mllt1">Extract KMT2A::MLLT1</a></li>
+<li><a href="#extract-kmt2a-others">Extract KMT2A Others</a></li>
+<li><a href="#extract-tcf3--pbx1">Extract TCF3::PBX1</a></li>
+<li><a href="#extract-tcf3--hlf">Extract TCF3::HLF</a></li>
+<li><a href="#extract-iamp21">Extract iAMP21</a></li>
+<li><a href="#extract-high-hyperdiploidy--near-haploid-haploidy--and-low-hypodiploidy">Extract High hyperdiploidy, Near Haploid/Haploidy, and Low hypodiploidy</a></li>
+<li><a href="#extract-complex-karyotype">Extract Complex Karyotype</a></li>
+<li><a href="#extract-b-other--b-other-plus--and-t-other-subgroups">Extract B_other, B_other_plus, and T_other Subgroups</a></li>
+<li><a href="#list-of-concept-ids">List of concept IDs</a></li>
+</ul>
+</li>
+</ul>
+<p><small><i><a href="http://ecotrust-canada.github.io/markdown-toc/" class="external-link">Table of contents generated with markdown-toc</a></i></small></p>
 <div class="section level1">
-<div class="page-header"><h1 id="harmonygeneticsubtype">harmonygeneticsubtype<a class="anchor" aria-label="anchor" href="#harmonygeneticsubtype"></a>
+<div class="page-header"><h1 id="harmony-genetic-subtype-package">Harmony Genetic Subtype Package<a class="anchor" aria-label="anchor" href="#harmony-genetic-subtype-package"></a>
 </h1></div>
+<p>Healthcare Alliance for Resourceful Medicines Offensive against Neoplasms in HematologY (HARMONY) is a European network of excellence that captures, integrates, analyzes, and harmonizes big data from high-quality multidisciplinary sources with the main purpose of unlocking valuable knowledge on various important hematologic malignancies (HMs).</p>
+<p>HARMONY aims at assembling, connecting and analyzing big data from HM patients to define standard sets of outcome indicators to be measured and used for decision-making by key healthcare systems stakeholders.</p>
+<p>HarmonyGeneticSubtype is an R package developed by the Leukaemia Research Cytogenetics Group (LRCG), Faculty of Medical Sciences at Newcastle University, specifically to extract some pre-defined chromosomal abnormalities from data collected from thousands of HM patients for downstream analyses. The package contains different tools that could be used to distil for instance individuals with certain genetic conditions like down syndrome, Intrachromosomal amplification of chromosome 21 (iAMP21), chromosomal translocations - ETV6::RUNX1, BCR::ABL1 etc from tens of thousands of high-quality anonymised harmonised hematologic malignancies datasets.</p>
+<p>The package leverages the representation of the datasets in Observational Medical Outcomes Partnership (OMOP) common data models (CDM) standardised tables format in the European knowledge bank … database. More information on the OMOP common data models can be found on the <a href="https://www.ohdsi.org/data-standardization/" class="external-link">Observational Health Data Sciences and Informatics website</a>.</p>
+<p>The package is continually being updated and the tools that are available for use on the HARMONY platform are listed below. The input arguments to the tools are the pre-processed person, concept, measurement, and condition_occurrence data frames obtained after executing the <code>preprocess_datasets.R</code> script available <a href="https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/preprocess_datasets.R" class="external-link">here</a>.</p>
 </div>
+<div class="section level1">
+<h1 id="tools-description">Tools Description<a class="anchor" aria-label="anchor" href="#tools-description"></a>
+</h1>
+<div class="section level2">
+<h2 id="extract-karyotype">Extract Karyotype<a class="anchor" aria-label="anchor" href="#extract-karyotype"></a>
+</h2>
+<ul>
+<li>
+<code>extract_karyotype</code>: <strong>This function takes the pre-processed “measurement” data frame as input and outputs a data frame containing all the karyotypes at diagnosis for every patient with recorded karyotype on the HARMONY platform. The produced data frame has two columns - person_id and karyotype - and the number of rows equals the number of patients with recorded karyotype at diagnosis.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_karyotype.html">extract_karyotype</a></span><span class="op">(</span>measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="generate-age-and-gender-data-frame">Generate Age and Gender Data Frame<a class="anchor" aria-label="anchor" href="#generate-age-and-gender-data-frame"></a>
+</h2>
+<ul>
+<li>
+<code>gen_age_gender_df</code>: <strong>The gen_age_gender_df function generates a data frame comprising 4 columns - age, gender, year_of_birth and age categories - for all the patients on the HARMONY platform. It takes the pre-processed person, concept, and measurement data frames as input arguments.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/gen_age_gender_df.html">gen_age_gender_df</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, concept <span class="op">=</span> <span class="va">concept</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="generate-karyotype-status">Generate Karyotype Status<a class="anchor" aria-label="anchor" href="#generate-karyotype-status"></a>
+</h2>
+<ul>
+<li>
+<code>gen_kary_status</code>: <strong>The gen_kary_status function generates a data frame with just two columns - person_id and kary_status. It essentially separates into 4 groups the karyotype status of all the patients on the HARMONY platform into normal karyotype, failed karyotype, abnormal karyotype, and unknown. The unknown refers to individuals with no recorded karyotype at diagnosis. It takes the pre-processed person and measurement data frames as inputs.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/gen_kary_status.html">gen_kary_status</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-etv6runx1">Extract <code>ETV6::RUNX1</code>
+<a class="anchor" aria-label="anchor" href="#extract-etv6runx1"></a>
+</h2>
+<ul>
+<li>
+<code>extract_etv6_runx1</code> : <strong>The extract_etv6_runx1 function extracts patients with ETV6::RUNX1 - t(12;21)(p13;q22.3) - translocation from the database on the HARMONY platform using the relevant <a href="#list-of-concept-ids">concept_ids</a> to filter out the chromosomal abnormality. It takes the pre-processed person and measurement data frames as inputs. The output data frame has 2 columns - person_id and ETV6::RUNX1. The ETV6::RUNX1 column has 3 subgroups - Present indicating the presence of ETV6::RUNX1, Absent for absence and Unknown for no information on ETV6::RUNX1 for that individual.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_etv6_runx1.html">extract_etv6_runx1</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-bcrabl1">Extract <code>BCR::ABL1</code>
+<a class="anchor" aria-label="anchor" href="#extract-bcrabl1"></a>
+</h2>
+<ul>
+<li>
+<code>extract_bcr_abl1</code> : <strong>This function takes the pre-processed person and measurement data frames as input and outputs a two-column data frame comprising of the person_id and BCR::ABL1. The BCR::ABL1 column has Present, Absent, and Unknown to represent presence, absence and no information on the BCR::ABL1 genetic abnormality respectively. A combination of relevant <a href="#list-of-concept-ids">concept_ids</a> for BCR::ABL1 and the presence of t(9;22)(q34;q11) pattern in the karyotype was used to extract the required information.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_bcr_abl1.html">extract_bcr_abl1</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-kmt2aaff1">Extract KMT2A::AFF1<a class="anchor" aria-label="anchor" href="#extract-kmt2aaff1"></a>
+</h2>
+<ul>
+<li>
+<code>extract_kmt2a_aff1</code> : <strong>This function extracts a two-column data frame - person_id and KMT2A::AFF1 columns for every patient on the HARMONY platform. It takes the pre-processed person and measurement data frames as inputs and uses relevant <a href="#list-of-concept-ids">concept_ids</a> to produce the output. It also used the t(4;11)(q21;q23) pattern in the karyotype in addition to the concept_ids to ensure that every patient with KMT2A::AFF1 translocation is captured.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_kmt2a_aff1.html">extract_kmt2a_aff1</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-kmt2amllt1">Extract KMT2A::MLLT1<a class="anchor" aria-label="anchor" href="#extract-kmt2amllt1"></a>
+</h2>
+<ul>
+<li>
+<code>extract_kmt2a_mllt1</code> : <strong>Like the extract_kmt2a_aff1, this function outputs a two-column data frame with the person_id and KMT2A::MLLT1 as its columns. the KMT2A::MLLT1 column has Present, Absent, and Unknown as its values representing the presence of KMT2A::MLLT1, absence of KMT2A::MLLT1 and no information on the genetic abnormality. It takes person and measurement data frames as input arguments, relevant <a href="#list-of-concept-ids">concept_ids</a> and the presence of t(11;19)(q23;p13.3) pattern in the karyotype to appropriately describe each patient concerning KMT2A::MLLT1 genetic abnormality.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_kmt2a_mllt1.html">extract_kmt2a_mllt1</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-kmt2a-others">Extract KMT2A Others<a class="anchor" aria-label="anchor" href="#extract-kmt2a-others"></a>
+</h2>
+<ul>
+<li>
+<code>extract_kmt2a_r</code> : <strong>This function extracts all other genetic abnormalities involving KMT2A other than KMT2A::AFF1 and KMT2A::MLLT1 into a two-column data frame. It takes the pre-processed person and measurement data frames as input arguments and used relevant <a href="#list-of-concept-ids">concept_ids</a> to produce the output data frame. This is in addition to a complex set of patterns used to extract the abnormalities from the karyotype.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_kmt2a_r.html">extract_kmt2a_r</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-tcf3pbx1">Extract TCF3::PBX1<a class="anchor" aria-label="anchor" href="#extract-tcf3pbx1"></a>
+</h2>
+<ul>
+<li>
+<code>extract_tcf3_pbx1</code> : <strong>The extract_tcf3_pbx1 extracts TCF3::PBX1 chromosomal abnormality into a two-column data frame comprising of the persond_id and TCF3::PBX1 columns. The combination of t(1;19)(q23;p13) pattern from the karyotype and relevant <a href="#list-of-concept-ids">concept_ids</a> were used to extract this particular genetic abnormality. The function takes the pre-processed person and measurement data frames as input arguments.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_tcf3_pbx1.html">extract_tcf3_pbx1</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-tcf3hlf">Extract TCF3::HLF<a class="anchor" aria-label="anchor" href="#extract-tcf3hlf"></a>
+</h2>
+<ul>
+<li>
+<code>extract_tcf3_hlf</code> : <strong>The extract_tcf3_hlf function extracts the rare TCF3::HLF genetic abnormality using the appropriate <a href="#list-of-concept-ids">concept_ids</a> to produce a two-column data frame as output. Using t(17;19)(q22;p13) pattern in the karyotype did not produce additional information on the presence or otherwise of the genetic condition on all the patients on the HARMONY platform. The function takes the pre-processed person and measurement data frames as input arguments.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_tcf3_hlf.html">extract_tcf3_hlf</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-iamp21">Extract iAMP21<a class="anchor" aria-label="anchor" href="#extract-iamp21"></a>
+</h2>
+<ul>
+<li>
+<code>extract_iamp21</code> : <strong>The extract_iamp21 function extracts the presence or otherwise of the iAMP21 genetic abnormality for all the patients on the HARMONY platform into a two-column data frame taking the pre-processed person and measurement data frames as input arguments, and using the appropriate <a href="#list-of-concept-ids">concept_ids</a>.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_iamp21.html">extract_iamp21</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-high-hyperdiploidy-near-haploidhaploidy-and-low-hypodiploidy">Extract High hyperdiploidy, Near Haploid/Haploidy, and Low hypodiploidy<a class="anchor" aria-label="anchor" href="#extract-high-hyperdiploidy-near-haploidhaploidy-and-low-hypodiploidy"></a>
+</h2>
+<ul>
+<li>
+<code>extract_heh_hap_LH</code> : <strong>The extract_heh_hap_LH function like most of the functions in the package takes the pre-processed person and measurement data frames as input arguments and outputs a four-column data frame comprising of the persond_id, HeH (High-hyperdiploidy), Hap (Haploidy and Near-haploidy), and LH (Low-hypodiploidy and Near-triploidy) columns. The function helps characterise the different aneuploidy subgroups in the HARMONY datasets. The HeH refers to the High-Hyperdiploidy subgroup having between 51-59 and 60-67 modal chromosome numbers and satisfying other pre-defined criteria. The Hap refers to the Haploidy or Near-Haploidy subgroup with between 20-29 modal chromosome numbers. The LH represents the Low-Hypodiploidy and Near-Triploidy subgroup with 30-39, 68-78 and 60-67 modal chromosome numbers with some pre-defined conditions. A combination of concept_ids and well-defined patterns in the karyotype was used to characterise each patient in the HARMONY datasets into the HeH, Hap and LH subgroups. A table containing all the concept_ids used to extract each of the genetic abnormalities considered in this package is available <a href="#list-of-concept-ids">here</a></strong>
+</li>
+</ul>
+<pre><code><span><span class="fu">extract_heh_hap_hotr</span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-complex-karyotype">Extract Complex Karyotype<a class="anchor" aria-label="anchor" href="#extract-complex-karyotype"></a>
+</h2>
+<ul>
+<li>
+<code>extract_complex_karyotype</code> : <strong>The extract_complex_karyotype function extracts all individuals with five or more chromosomal abnormalities into a two-column data frame, taking the pre-processed person and measurement data frames as inputs. Relevant <a href="#list-of-concept-ids">concept_ids</a> were used to extract patients into 3 groups - Present, Absent and Unknown indicating the presence of complex karyotype, absence of complex karyotype and no information on complex karyotype for each patient in the HARMONY datasets. The unknown also refers to individuals with no recorded karyotype at diagnosis. Karyotypes of all the patients with recorded karyotype at diagnosis were examined very closely to identify patients with the presence of 5 or more chromosomal abnormalities and were added to those already captured by the concept_ids to produce a data frame that describes the presence or otherwise of complex karyotype in every patient in the HARMONY datasets.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_complex_karyotype.html">extract_complex_karyotype</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="extract-b_other-b_other_plus-and-t_other-subgroups">Extract B_other, B_other_plus, and T_other Subgroups<a class="anchor" aria-label="anchor" href="#extract-b_other-b_other_plus-and-t_other-subgroups"></a>
+</h2>
+<ul>
+<li>
+<code>extract_B_other_B_other_plus_and_T_other</code> : <strong>The extract_B_other_B_other_plus_and_T_other function combines all the 12 previously described chromosomal abnormalities with B_other, B_other_plus, T_other, and Unknown columns to fully describe all the patients in the HARMONY datasets with respect to the chromosomal abnormalities of interest. B_other classifies patients with B-cells that have not been classified by the previous 12 chromosomal abnormalities in their order of preference into Present, Absent and Unknown. Present means the presence of B-cells with normal or abnormal karyotype status. Absent represents patients with B-cells that have already been described by at least one of the 12 previously defined genetic abnormalities, while Unknown represents patients with B-cells with no information to adequately classify them into any of the previously defined genetic subtypes. B_other_plus captures these individuals and further distils them into Present, Absent and Unknown. Present in the B_other_plus subgroup means the “Unknown” subgroup in B-other with B-cells that have not been classified into any of the previously defined genetic subtypes. T_other captures into Present subgroup patients with T-cells that have normal or abnormal karyotype status and are not already classified into any of the previously defined genetic subtypes. Absent in the T_other column represents patients with T-cells that have already been classified into at least one of the previously defined genetic subtypes, while the unknown simply represents all the T-cell patients with no adequate information to classify them into any of the genetic subtypes of interest.</strong>
+</li>
+</ul>
+<pre><code><span><span class="fu"><a href="reference/extract_B_other_B_other_plus_and_T_other.html">extract_B_other_B_other_plus_and_T_other</a></span><span class="op">(</span>person <span class="op">=</span> <span class="va">person</span>, measurement <span class="op">=</span> <span class="va">measurement</span>, condition_occurrence <span class="op">=</span> <span class="va">condition_occurrence</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="list-of-concept-ids">List of concept IDs<a class="anchor" aria-label="anchor" href="#list-of-concept-ids"></a>
+</h2>
+<p><strong>The concept ids used to extract all the genetic abnormalities are shown in the concept id table below.</strong> <!--- [here](https://github.com/ayolawal/harmonygeneticsubtype/blob/main/data-raw/Concept_id_List.xlsx) ---></p>
+<details><summary>
+Concept ID Table
+</summary><p>
+</p>
+<table class="table">
+<colgroup>
+<col width="20%">
+<col width="20%">
+<col width="18%">
+<col width="20%">
+<col width="22%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Abnormality</th>
+<th align="left">Concept_id</th>
+<th align="left">Column</th>
+<th align="left">Table</th>
+<th align="left">Concept_Name</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">karyotype</td>
+<td align="left">40765097</td>
+<td align="left">measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Chromosome analysis result in ISCN expression</td>
+</tr>
+<tr class="even">
+<td align="left">Age</td>
+<td align="left">3007016</td>
+<td align="left">measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Age at cancer diagnosis</td>
+</tr>
+<tr class="odd">
+<td align="left">ETV6::RUNX1</td>
+<td align="left">3036903 <br> 35977015</td>
+<td align="left">measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">t(12;21)(p13;q22.3)(ETV6,RUNX1) fusion transcript in Blood or Tissue by Molecular genetics method <br> Karyotype t(12;21)(p13;q22)</td>
+</tr>
+<tr class="even">
+<td align="left">BCR::ABL1</td>
+<td align="left">3011913 <br> 3013321 <br> 3016815 <br>3028956 <br> 46235651 <br>35977026</td>
+<td align="left">measurement_concept_id <br> measurement_concept_id <br> measurement_concept_id <br> measurement_concept_id <br> measurement_concept_id <br> measurement_source_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">t(9;22)(q34.1;q11)(ABL1,BCR) fusion transcript, major, and minor break points in Blood or Tissue by Molecular genetics method <br> Karyotype t(9;22)(q34;q11.2)</td>
+</tr>
+<tr class="odd">
+<td align="left">KMT2A::AFF1</td>
+<td align="left">2000109034 <br> 3012425 <br> 37030733</td>
+<td align="left">measurement_source_concept_id <br> measurement_concept_id <br> measurement_source_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Karyotype t(4;11) <br> t(4;11)(q21.3;q23)(AFF1,MLL) fusion transcript in Blood or Tissue by Molecular genetics method</td>
+</tr>
+<tr class="even">
+<td align="left">KMT2A::MLLT1</td>
+<td align="left">3002279 <br> 37021664</td>
+<td align="left">measurement_concept_id <br> measurement_source_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">t(11;19)(q23;p13.3)(MLL,MLLT1) fusion transcript in Blood or Tissue</td>
+</tr>
+<tr class="odd">
+<td align="left">KMT2A_r</td>
+<td align="left">2000000263 <br> 2000000269 <br> 3022443 <br> 3037009 <br> 36017933</td>
+<td align="left">measurement_source_concept_id <br> measurement_source_concept_id <br> measurement_concept_id <br> measurement_concept_id <br> measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">MLL partial tandem duplication analysis <br> 11q23 rearrangement by cytogenetics <br> t(9;11)(p22;q23)(MLLT3,MLL) fusion transcript in Blood <br> MLL gene rearrangements in Blood <br> t(9:11)(p22;q23);MLLT3-MLL</td>
+</tr>
+<tr class="even">
+<td align="left">TCF3::PBX1</td>
+<td align="left">2000108068 <br> 3000296</td>
+<td align="left">measurement_source_concept_id <br> measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Karyotype t(1;19)(q23;p13) <br> t(1;19)(q23.3;p13.3)(PBX1,TCF3) fusion transcript in Blood or Tissue</td>
+</tr>
+<tr class="odd">
+<td align="left">TCF3::HLF</td>
+<td align="left">42868760</td>
+<td align="left">measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">t(17;19)(q22;p13.3)(HLF,TCF3) fusion transcript in Blood or Tissue</td>
+</tr>
+<tr class="even">
+<td align="left">iAMP21</td>
+<td align="left">2000000466</td>
+<td align="left">measurement_source_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Intrachromosomal amplification of chromosome 21 measurement</td>
+</tr>
+<tr class="odd">
+<td align="left">HeH</td>
+<td align="left">2000000462 <br> 36660734</td>
+<td align="left">measurement_source_concept_id <br> measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Detection of high hyperdiploidy <br> Chromosome aneuploidy details in Blood or Tissue by Molecular genetics method Narrative</td>
+</tr>
+<tr class="even">
+<td align="left">Hap</td>
+<td align="left">2000000464</td>
+<td align="left">measurement_source_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Detection of near haploidy measurement</td>
+</tr>
+<tr class="odd">
+<td align="left">LH</td>
+<td align="left">2000000463 <br> 36660734</td>
+<td align="left">measurement_source_concept_id <br> measurement_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Detection of low hypodiploidy <br> Chromosome aneuploidy details in Blood or Tissue by Molecular genetics method Narrative</td>
+</tr>
+<tr class="even">
+<td align="left">Complex Karyotype</td>
+<td align="left">2000000153 <br> 45877994</td>
+<td align="left">measurement_source_concept_id <br> value_as_concept_id</td>
+<td align="left">Measurement</td>
+<td align="left">Complex karyotype <br> Yes</td>
+</tr>
+<tr class="odd">
+<td align="left">B-Cell</td>
+<td align="left">4082461 <br> 4173963</td>
+<td align="left">condition_concept_id</td>
+<td align="left">Condition_Occurrence</td>
+<td align="left">Precursor B-cell acute lymphoblastic leukaemia <br> B-cell acute lymphoblastic leukaemia</td>
+</tr>
+<tr class="even">
+<td align="left">T-Cell</td>
+<td align="left">4082464</td>
+<td align="left">condition_concept_id</td>
+<td align="left">Condition_Occurrence</td>
+<td align="left">T-cell acute lymphoblastic leukaemia</td>
+</tr>
+</tbody>
+</table></details>
+</div>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
