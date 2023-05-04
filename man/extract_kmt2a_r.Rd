@@ -4,7 +4,7 @@
 \alias{extract_kmt2a_r}
 \title{Function to extract KMT2A_r principal genetic abnormality}
 \usage{
-extract_kmt2a_r(person, measurement)
+extract_kmt2a_r(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

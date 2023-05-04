@@ -4,7 +4,7 @@
 \alias{extract_complex_karyotype}
 \title{Function to extract complex karyotype principal genetic abnormality}
 \usage{
-extract_complex_karyotype(person, measurement)
+extract_complex_karyotype(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

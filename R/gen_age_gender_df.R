@@ -6,7 +6,7 @@
 #' @param concept The concept data frame from the OMOP table
 #' @param measurement The measurement data frame from the OMOP table
 #'
-#' @return A data frame containing age, gender, year of birth and age categories
+#' @return A data frame containing age, gender, diagnosis date, year of birth and age categories
 #' @export
 #'
 
@@ -25,12 +25,11 @@ gen_age_gender_df <- function(person, concept, measurement){
 
   ## extract age, merge gender and add age_cat
   age_gender <- measurement %>% filter(grepl("3007016", measurement_concept_id)) %>%
-    arrange(paste(person_id, measurement_concept_id, measurement_date)) %>%
-    filter(!duplicated(paste(person_id, measurement_concept_id)) )  %>%
     mutate(age = value_as_number) %>%
     merge(gender, by = "person_id", all.x = T) %>%
-    select(person_id, age, gender, year_of_birth) %>%
-    mutate(age_cat = cut(age, breaks=c(-Inf, 5, 10, 15, 25, 40, Inf), labels=c("0-4", "5-9", "10-14", "15-24", "25-39", "40+"), right=FALSE))
+    mutate(diag_date = as.Date(ymd_hms(measurement_date))) %>%
+    mutate(age_cat = cut(age, breaks=c(-Inf, 5, 10, 15, 25, 40, Inf), labels=c("0-4", "5-9", "10-14", "15-24", "25-39", "40+"), right=FALSE)) %>%
+    select(person_id, age, age_cat, gender, year_of_birth, diag_date)
 
   return(age_gender)
 }

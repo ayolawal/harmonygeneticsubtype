@@ -4,17 +4,22 @@
 #'
 #' @param person  The person data frame from the OMOP table
 #' @param measurement  The measurement data frame from the OMOP table
+#' @param visit_occurrence The visit_occurrence data frame from the OMOP table
 #'
 #' @return A data frame containing the ANEUOPLOIDY principal genetic abnormality
 #' @export
 #'
 
-extract_heh_hap_LH <- function(person, measurement) {
+extract_heh_hap_LH <- function(person, measurement, visit_occurrence) {
 
   ## check inputs are of class data.frame
-  if(!is(person, "data.frame") | !is(measurement, "data.frame")){
+  if(!is(person, "data.frame") | !is(measurement, "data.frame") | !is(visit_occurrence, "data.frame")){
     stop("All inputs must be of class 'data.frame'")
   }
+
+  Visit_Date <- visit_occurrence %>% rename(VSD = "visit_start_date", VOI = "visit_occurrence_id", VSV = "visit_source_value") %>%
+    filter(grepl("2000100001", visit_source_concept_id)) %>% select(person_id, VOI, VSD) %>%  arrange(person_id) %>%
+    mutate(VSD = as.Date(ymd_hms(VSD)))
 
   ## extract karyotype status
   karyotype_status <- gen_kary_status(person, measurement)
@@ -24,42 +29,53 @@ extract_heh_hap_LH <- function(person, measurement) {
 
   ## HeH - High hyperdiploidy extracted using concept_id
   heh_cid <- measurement %>% filter(grepl("36660734", measurement_concept_id) | grepl("2000000462", measurement_source_concept_id)) %>%
-    select( person_id, value_as_concept_id) %>%
+    select( person_id, value_as_concept_id, visit_occurrence_id) %>%
     mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135, "Absent", "Present")) %>%
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     arrange( person_id, desc(value_as_concept_id)) %>%
-    filter(!duplicated(person_id)) %>%
     mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
     mutate( heh = value_as_concept_id) %>%
-    select(-value_as_concept_id)
+    merge(Visit_Date, by = "person_id", all.x = T) %>%
+    filter(!(heh == "Present" & visit_occurrence_id != VOI)) %>%
+    filter(!duplicated(person_id)) %>%
+    select(person_id, heh)
 
   heh_cid_red <- heh_cid %>% filter(heh == "Present")
 
-  ## LH - Low hypodiploidy extracted using concept_id
-  LH_cid <- measurement %>% filter((grepl("36660734", measurement_concept_id) | grepl("2000000463", measurement_source_concept_id)) & !grepl("high_hyperdiploidy",      measurement_source_value)) %>%
-    select( person_id, value_as_concept_id) %>%
-    mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135, "Absent", "Present")) %>%
-    merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
-    arrange( person_id, desc(value_as_concept_id)) %>%
-    filter(!duplicated(person_id)) %>%
-    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
-    mutate( LH = value_as_concept_id) %>%
-    select(-value_as_concept_id)
-
-  LH_cid_red <- LH_cid %>% filter(LH == "Present")
-
   ## Hap - Haploidy/Near Haploidy extracted using concept_id
   hap_cid <- measurement %>% filter(grepl("2000000464", measurement_source_concept_id)) %>%
-    select( person_id, value_as_concept_id) %>%
+    select( person_id, value_as_concept_id, visit_occurrence_id) %>%
     mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135,"Absent", "Present")) %>%
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     arrange( person_id, desc(value_as_concept_id)) %>%
-    filter(!duplicated(person_id)) %>%
     mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
     mutate(hap = value_as_concept_id) %>%
-    select(-value_as_concept_id)
+    merge(heh_cid, by = "person_id", all.x = T) %>%
+    mutate( hap = ifelse(heh == "Present", "Absent", hap)) %>%
+    merge(Visit_Date, by = "person_id", all.x = T) %>%
+    filter(!(hap == "Present" & visit_occurrence_id != VOI)) %>%
+    filter(!duplicated(person_id)) %>%
+    select(person_id, hap)
 
   hap_cid_red <- hap_cid %>% filter(hap == "Present")
+
+  ## LH - Low hypodiploidy extracted using concept_id
+  LH_cid <- measurement %>% filter((grepl("36660734", measurement_concept_id) | grepl("2000000463", measurement_source_concept_id)) & !grepl("high_hyperdiploidy", measurement_source_value)) %>%
+    select( person_id, value_as_concept_id, visit_occurrence_id) %>%
+    mutate(value_as_concept_id = ifelse(value_as_concept_id == 4132135, "Absent", "Present")) %>%
+    merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
+    arrange( person_id, desc(value_as_concept_id)) %>%
+    mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", value_as_concept_id)) %>%
+    mutate( LH = value_as_concept_id) %>%
+    merge(heh_cid, by = "person_id", all.x = T) %>%
+    merge(hap_cid, by = "person_id", all.x = T) %>%
+    mutate( LH = ifelse((heh == "Present" | hap == "Present"), "Absent", LH)) %>%
+    merge(Visit_Date, by = "person_id", all.x = T) %>%
+    filter(!(LH == "Present" & visit_occurrence_id != VOI)) %>%
+    filter(!duplicated(person_id)) %>%
+    select(person_id, LH)
+
+  LH_cid_red <- LH_cid %>% filter(LH == "Present")
 
   heh_kar1 <- kar_refined %>% mutate(karyotype = gsub("\\s|\\?", "", karyotype)) %>%
     mutate(karyotype = gsub("\\|", ",", karyotype)) %>%                      # replace pipe (|) with coma

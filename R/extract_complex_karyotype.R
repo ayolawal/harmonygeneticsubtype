@@ -4,17 +4,22 @@
 #'
 #' @param person  The person data frame from the OMOP table
 #' @param measurement  The measurement data frame from the OMOP table
+#' @param visit_occurrence The visit_occurrence data frame from the OMOP table
 #'
 #' @return A data frame containing the complex karyotype principal genetic abnormality
 #' @export
 #'
 
-extract_complex_karyotype <- function(person, measurement) {
+extract_complex_karyotype <- function(person, measurement, visit_occurrence) {
 
   ## check inputs are of class data.frame
-  if(!is(person, "data.frame") | !is(measurement, "data.frame")){
+  if(!is(person, "data.frame") | !is(measurement, "data.frame") | !is(visit_occurrence, "data.frame")){
     stop("All inputs must be of class 'data.frame'")
   }
+
+  Visit_Date <- visit_occurrence %>% rename(VSD = "visit_start_date", VOI = "visit_occurrence_id", VSV = "visit_source_value") %>%
+    filter(grepl("2000100001", visit_source_concept_id)) %>% select(person_id, VOI, VSD) %>%  arrange(person_id) %>%
+    mutate(VSD = as.Date(ymd_hms(VSD)))
 
   ## extract karyotype
   kar_refined <- extract_karyotype(measurement)
@@ -57,16 +62,22 @@ extract_complex_karyotype <- function(person, measurement) {
                                 "PRV_2_8ca248c0ad4a7126a5c521e16eb2599c33a0803a", "PRV_2_c4eeb8e85eace480a2be6a5dfa4f903698a63cbe")
 
   df12 <- measurement %>% filter((grepl("2000000153", measurement_source_concept_id) & grepl("45877994", value_as_concept_id))) %>%
-    select( person_id, value_as_concept_id) %>%
+    select( person_id, value_as_concept_id, visit_occurrence_id) %>%
     merge(kar_refined, by = "person_id", all.y=T) %>%
     mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), FALSE, TRUE)) %>%
     merge((person %>% select(person_id)), by = "person_id", all.y = T) %>%
     mutate(value_as_concept_id = ifelse(is.na(value_as_concept_id), "Unknown", ifelse(value_as_concept_id == TRUE, "Present", "Absent"))) %>%
-    mutate(value_as_concept_id = ifelse(person_id %in% c(complex_karyotype_list_1, complex_karyotype_list_2), "Present", value_as_concept_id)) %>%
     mutate("complex_karyotype" = value_as_concept_id) %>%
     merge(karyotype_status, by = "person_id", all=T) %>%
     mutate(complex_karyotype = ifelse(complex_karyotype == "Unknown" & (kary_status=="Normal" | kary_status=="Abnormal"), "Absent", complex_karyotype)) %>%
-    select(-c(kary_status, value_as_concept_id, karyotype))
+    merge(Visit_Date, by = "person_id", all.x = T) %>%
+    filter(!(complex_karyotype == "Present" & visit_occurrence_id != VOI)) %>%
+    filter(!duplicated(person_id)) %>%
+    mutate(complex_karyotype = ifelse(person_id %in% c(complex_karyotype_list_1, complex_karyotype_list_2), "Present", complex_karyotype)) %>%
+    merge(extract_heh_hap_LH(person, measurement, visit_occurrence), by = "person_id", all = T) %>%
+    merge(extract_kmt2a_r(person, measurement, visit_occurrence), by = "person_id", all = T) %>%
+    mutate(complex_karyotype = ifelse((heh == "Present" | LH == "Present" | KMT2A_r == "Present"), "Absent" ,complex_karyotype) ) %>%
+    select(person_id, complex_karyotype)
 
   return(df12)
 }

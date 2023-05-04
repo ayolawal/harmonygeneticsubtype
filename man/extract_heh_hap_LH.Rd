@@ -4,7 +4,7 @@
 \alias{extract_heh_hap_LH}
 \title{Function to extract ANEUOPLOIDY principal genetic abnormality}
 \usage{
-extract_heh_hap_LH(person, measurement)
+extract_heh_hap_LH(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

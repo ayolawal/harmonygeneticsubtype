@@ -4,7 +4,7 @@
 \alias{extract_tcf3_hlf}
 \title{Function to extract TCF3::HLF principal genetic abnormality}
 \usage{
-extract_tcf3_hlf(person, measurement)
+extract_tcf3_hlf(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

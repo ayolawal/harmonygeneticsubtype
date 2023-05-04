@@ -4,7 +4,7 @@
 \alias{extract_bcr_abl1}
 \title{Function to extract BCR::ABL1 principal genetic abnormality}
 \usage{
-extract_bcr_abl1(person, measurement)
+extract_bcr_abl1(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

@@ -7,7 +7,8 @@
 extract_B_other_B_other_plus_and_T_other(
   person,
   measurement,
-  condition_occurrence
+  condition_occurrence,
+  visit_occurrence
 )
 }
 \arguments{

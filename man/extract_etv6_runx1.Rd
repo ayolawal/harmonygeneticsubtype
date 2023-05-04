@@ -4,7 +4,7 @@
 \alias{extract_etv6_runx1}
 \title{Function to extract the ETV6::RUNX1 principal genetic abnormality}
 \usage{
-extract_etv6_runx1(person, measurement)
+extract_etv6_runx1(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

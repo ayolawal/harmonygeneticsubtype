@@ -4,7 +4,7 @@
 \alias{extract_tcf3_pbx1}
 \title{Function to extract TCF3::PBX1 principal genetic abnormality}
 \usage{
-extract_tcf3_pbx1(person, measurement)
+extract_tcf3_pbx1(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

@@ -4,7 +4,7 @@
 \alias{extract_iamp21}
 \title{Function to extract IAMP21 principal genetic abnormality}
 \usage{
-extract_iamp21(person, measurement)
+extract_iamp21(person, measurement, visit_occurrence)
 }
 \arguments{
 \item{person}{The person data frame from the OMOP table}

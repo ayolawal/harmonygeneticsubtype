@@ -14,7 +14,7 @@ gen_age_gender_df(person, concept, measurement)
 \item{measurement}{The measurement data frame from the OMOP table}
 }
 \value{
-A data frame containing age, gender, year of birth and age categories
+A data frame containing age, gender, diagnosis date, year of birth and age categories
 }
 \description{
 Function to extract age and gender from the OMOP measurement table

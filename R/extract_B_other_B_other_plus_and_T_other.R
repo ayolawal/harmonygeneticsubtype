@@ -4,29 +4,30 @@
 #' @param person  The person data frame from the OMOP table
 #' @param measurement  The measurement data frame from the OMOP table
 #' @param condition_occurrence The condition_occurrence data frame from the OMOP table
+#' @param visit_occurrence The visit_occurrence data frame from the OMOP table
 #'
 #' @return A data frame containing the B-others and B-other-plus principal genetic abnormality
 #' @export
 #'
 
-extract_B_other_B_other_plus_and_T_other <- function(person, measurement, condition_occurrence) {
+extract_B_other_B_other_plus_and_T_other <- function(person, measurement, condition_occurrence, visit_occurrence) {
 
   ## check inputs are of class data.frame
-  if(!is(person, "data.frame") | !is(measurement, "data.frame") | !is(condition_occurrence, "data.frame")){
+  if(!is(person, "data.frame") | !is(measurement, "data.frame") | !is(condition_occurrence, "data.frame") | !is(visit_occurrence, "data.frame")){
     stop("All inputs must be of class 'data.frame'")
   }
 
   ## Load the 12 principal genetic abnormalities
-  df1 <- extract_etv6_runx1(person, measurement)
-  df2 <- extract_bcr_abl1(person, measurement)
-  df3 <- extract_kmt2a_aff1(person, measurement)
-  df4 <- extract_kmt2a_mllt1(person, measurement)
-  df5 <- extract_kmt2a_r(person, measurement)
-  df6 <- extract_tcf3_pbx1(person, measurement)
-  df7 <- extract_tcf3_hlf(person, measurement)
-  df8 <- extract_iamp21(person, measurement)
-  df9_11 <- extract_heh_hap_LH(person, measurement)
-  df12 <- extract_complex_karyotype(person, measurement)
+  df1 <- extract_etv6_runx1(person, measurement, visit_occurrence)
+  df2 <- extract_bcr_abl1(person, measurement, visit_occurrence)
+  df3 <- extract_kmt2a_aff1(person, measurement, visit_occurrence)
+  df4 <- extract_kmt2a_mllt1(person, measurement, visit_occurrence)
+  df5 <- extract_tcf3_pbx1(person, measurement, visit_occurrence)
+  df6 <- extract_tcf3_hlf(person, measurement, visit_occurrence)
+  df7 <- extract_iamp21(person, measurement, visit_occurrence)
+  df8 <- extract_kmt2a_r(person, measurement, visit_occurrence)
+  df9_11 <- extract_heh_hap_LH(person, measurement, visit_occurrence)
+  df12 <- extract_complex_karyotype(person, measurement, visit_occurrence)
 
   ## Construct dataset with the principal genetic abnormalities
   df_gsubtype <- list(df1, df2, df3, df4, df5, df6, df7, df8, df9_11, df12) %>%
@@ -64,7 +65,7 @@ extract_B_other_B_other_plus_and_T_other <- function(person, measurement, condit
     mutate(gsubtype = ifelse(is.na(gsubtype) & T_other == "Present", "T_other", gsubtype)) %>%
     mutate("Unknown" = ifelse(is.na(gsubtype), "Present", "Absent")) %>%
     mutate(gsubtype = ifelse(is.na(gsubtype), "Unknown", gsubtype)) %>%
-    select(person_id, ETV6_RUNX1, BCR_ABL1, KMT2A_AFF1, KMT2A_MLLT1, KMT2A_r, TCF3_PBX1, TCF3_HLF, iAMP21, heh, hap, LH, complex_karyotype, B_other, B_other_plus, T_other, Unknown, Immuno, gsubtype)
+    select(person_id, ETV6_RUNX1, BCR_ABL1, KMT2A_AFF1, KMT2A_MLLT1, TCF3_PBX1, TCF3_HLF, iAMP21, KMT2A_r, heh, hap, LH, complex_karyotype, B_other, B_other_plus, T_other, Unknown, Immuno, gsubtype)
 
   return(df13_16)
 }
